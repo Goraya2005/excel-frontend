@@ -1,19 +1,15 @@
-// page.tsx
-
 'use client'
 
-
 import Copyright from '@/app/components/Copyright'
-
 import { useState, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const Home = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState('');
-  const [uploading, setUploading] = useState(false);
-  const [querying, setQuerying] = useState(false);
+  const [prompt, setPrompt] = useState<string>('');
+  const [response, setResponse] = useState<string>('');
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [querying, setQuerying] = useState<boolean>(false);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -32,15 +28,16 @@ const Home = () => {
 
     try {
       setUploading(true);
-      const res = await axios.post('http://localhost:8000/upload/', formData, {
+      const res = await axios.post<{ message: string }>('http://localhost:8000/upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       alert(res.data.message);
-    } catch (error: any) {
-      console.error(error);
-      const errorMessage = error.response?.data?.detail || 'Error uploading file.';
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ detail?: string }>;
+      console.error(err);
+      const errorMessage = err.response?.data?.detail || 'Error uploading file.';
       alert(`Error uploading file: ${errorMessage}`);
     } finally {
       setUploading(false);
@@ -56,11 +53,12 @@ const Home = () => {
 
     try {
       setQuerying(true);
-      const res = await axios.post('http://localhost:8000/query/', { prompt });
+      const res = await axios.post<{ response: string }>('http://localhost:8000/query/', { prompt });
       setResponse(res.data.response);
-    } catch (error: any) {
-      console.error(error);
-      const errorMessage = error.response?.data?.detail || 'Error fetching response.';
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ detail?: string }>;
+      console.error(err);
+      const errorMessage = err.response?.data?.detail || 'Error fetching response.';
       alert(`Error fetching response: ${errorMessage}`);
     } finally {
       setQuerying(false);
@@ -73,23 +71,17 @@ const Home = () => {
       style={{ backgroundImage: 'url("/uaf2.JPEG")' }}
     >
       <div className="w-full max-w-6xl bg-white bg-opacity-90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
-        
-        {/* Left Side Image - Added Padding and Transparency */}
         <div
           className="md:w-1/4 h-64 md:h-auto bg-no-repeat bg-contain bg-center md:p-4 bg-white bg-opacity-80 rounded-xl"
           style={{ backgroundImage: 'url("/mni-3.jpg")' }}
         ></div>
-
-        {/* Right Side - Increased Width */}
         <div className="md:w-3/4 p-8 flex flex-col justify-center space-y-8">
           <h1 className="text-4xl font-extrabold text-center text-gray-800 drop-shadow-lg">
             EXCEL DATA ANALYSIS
           </h1>
           <h2 className="text-4xl font-extrabold text-center text-gray-800 drop-shadow-lg">
-          Upload an Excel file and conduct various data analysis tests.
+            Upload an Excel file and conduct various data analysis tests.
           </h2>
-
-          {/* File Upload Section */}
           <div className="w-full bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-2xl font-semibold text-gray-700 mb-4">Upload File</h2>
             <input
@@ -102,16 +94,12 @@ const Home = () => {
               onClick={handleUpload}
               disabled={uploading}
               className={`w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ${
-                uploading
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:bg-blue-700 transform hover:scale-105'
+                uploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 transform hover:scale-105'
               }`}
             >
               {uploading ? 'Uploading...' : 'Upload'}
             </button>
           </div>
-
-          {/* Query Section */}
           <div className="w-full bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-2xl font-semibold text-gray-700 mb-4">Ask a Question</h2>
             <form onSubmit={handleQuery} className="flex flex-col space-y-4">
@@ -126,17 +114,13 @@ const Home = () => {
                 type="submit"
                 disabled={querying}
                 className={`w-full bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ${
-                  querying
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'hover:bg-green-700 transform hover:scale-105'
+                  querying ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-700 transform hover:scale-105'
                 }`}
               >
                 {querying ? 'Querying...' : 'Submit'}
               </button>
             </form>
           </div>
-
-          {/* Response Section - Increased Size */}
           <div className="w-full bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-2xl font-semibold text-gray-700 mb-4">Response</h2>
             <div className="p-4 border border-gray-300 rounded-lg min-h-[250px] bg-gray-50">
@@ -149,10 +133,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-<Copyright />
-
-
+      <Copyright />
     </div>
   );
 };
