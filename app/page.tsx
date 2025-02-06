@@ -28,7 +28,7 @@ const Home = () => {
 
     try {
       setUploading(true);
-      const res = await axios.post<{ message: string }>('http://localhost:8000/upload/', formData, {
+      const res = await axios.post<{ message: string }>('https://excel-backend-3k10.onrender.com/upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -53,7 +53,7 @@ const Home = () => {
 
     try {
       setQuerying(true);
-      const res = await axios.post<{ response: string }>('http://localhost:8000/query/', { prompt });
+      const res = await axios.post<{ response: string }>('https://excel-backend-3k10.onrender.com/query/', { prompt });
       setResponse(res.data.response);
     } catch (error: unknown) {
       const err = error as AxiosError<{ detail?: string }>;
