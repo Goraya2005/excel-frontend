@@ -33,9 +33,16 @@ const Home = () => {
       console.log('Upload Response:', res.data);
       alert(res.data.message || 'File uploaded successfully!');
     } catch (error: unknown) {
-      const err = error as AxiosError<{ detail?: string }>;
-      console.error('Upload Error:', err);
-      alert(`Error uploading file: ${err.response?.data?.detail || err.message}`);
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          alert('Network error: Please check your internet connection or API server.');
+        } else {
+          alert(`Error uploading file: ${error.response.data?.detail || error.message}`);
+        }
+      } else {
+        alert('An unexpected error occurred. Please try again.');
+      }
+      console.error('Upload Error:', error);
     } finally {
       setUploading(false);
     }
@@ -51,9 +58,16 @@ const Home = () => {
       console.log('Query Response:', res.data);
       setResponse(res.data.response);
     } catch (error: unknown) {
-      const err = error as AxiosError<{ detail?: string }>;
-      console.error('Query Error:', err);
-      alert(`Error fetching response: ${err.response?.data?.detail || err.message}`);
+      if (axios.isAxiosError(error)) {
+        if (!error.response) {
+          alert('Network error: Unable to reach the server. Please check your connection.');
+        } else {
+          alert(`Error fetching response: ${error.response.data?.detail || error.message}`);
+        }
+      } else {
+        alert('An unexpected error occurred. Please try again.');
+      }
+      console.error('Query Error:', error);
     } finally {
       setQuerying(false);
     }
