@@ -32,23 +32,10 @@ const Home = () => {
       });
       console.log('Upload Response:', res.data);
       alert(res.data.message || 'File uploaded successfully!');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Upload AxiosError:', error.toJSON());
-        if (!error.response) {
-          alert('Network Error: Please check your internet connection or backend server availability.');
-        } else {
-          console.error('Error Details:', {
-            status: error.response.status,
-            headers: error.response.headers,
-            data: error.response.data,
-          });
-          alert(`Error uploading file: ${error.response.data.detail || error.message}`);
-        }
-      } else {
-        console.error('Unexpected Error:', error);
-        alert('An unexpected error occurred. Please try again.');
-      }
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ detail?: string }>;
+      console.error('Upload Error:', err);
+      alert(`Error uploading file: ${err.response?.data?.detail || err.message}`);
     } finally {
       setUploading(false);
     }
@@ -63,23 +50,10 @@ const Home = () => {
       const res = await axios.post<{ response: string }>(`${API_BASE_URL}/query/`, { prompt });
       console.log('Query Response:', res.data);
       setResponse(res.data.response);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error('Query AxiosError:', error.toJSON());
-        if (!error.response) {
-          alert('Network Error: Please check your internet connection or backend server availability.');
-        } else {
-          console.error('Error Details:', {
-            status: error.response.status,
-            headers: error.response.headers,
-            data: error.response.data,
-          });
-          alert(`Error fetching response: ${error.response.data.detail || error.message}`);
-        }
-      } else {
-        console.error('Unexpected Error:', error);
-        alert('An unexpected error occurred. Please try again.');
-      }
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ detail?: string }>;
+      console.error('Query Error:', err);
+      alert(`Error fetching response: ${err.response?.data?.detail || err.message}`);
     } finally {
       setQuerying(false);
     }
