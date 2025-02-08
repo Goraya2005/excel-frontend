@@ -32,12 +32,17 @@ const Home = () => {
       });
       console.log('Upload Response:', res.data);
       alert(res.data.message || 'File uploaded successfully!');
-    } catch (error: unknown) {
+    } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.error('Upload AxiosError:', error.toJSON());
         if (!error.response) {
           alert('Network Error: Please check your internet connection or backend server availability.');
         } else {
-          console.error('Upload Error:', error.response.data);
+          console.error('Error Details:', {
+            status: error.response.status,
+            headers: error.response.headers,
+            data: error.response.data,
+          });
           alert(`Error uploading file: ${error.response.data.detail || error.message}`);
         }
       } else {
@@ -58,12 +63,17 @@ const Home = () => {
       const res = await axios.post<{ response: string }>(`${API_BASE_URL}/query/`, { prompt });
       console.log('Query Response:', res.data);
       setResponse(res.data.response);
-    } catch (error: unknown) {
+    } catch (error) {
       if (axios.isAxiosError(error)) {
+        console.error('Query AxiosError:', error.toJSON());
         if (!error.response) {
           alert('Network Error: Please check your internet connection or backend server availability.');
         } else {
-          console.error('Query Error:', error.response.data);
+          console.error('Error Details:', {
+            status: error.response.status,
+            headers: error.response.headers,
+            data: error.response.data,
+          });
           alert(`Error fetching response: ${error.response.data.detail || error.message}`);
         }
       } else {
