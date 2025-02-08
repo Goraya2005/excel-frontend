@@ -35,14 +35,15 @@ const Home = () => {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (!error.response) {
-          alert('Network error: Please check your internet connection or API server.');
+          alert('Network Error: Please check your internet connection or backend server availability.');
         } else {
-          alert(`Error uploading file: ${error.response.data?.detail || error.message}`);
+          console.error('Upload Error:', error.response.data);
+          alert(`Error uploading file: ${error.response.data.detail || error.message}`);
         }
       } else {
+        console.error('Unexpected Error:', error);
         alert('An unexpected error occurred. Please try again.');
       }
-      console.error('Upload Error:', error);
     } finally {
       setUploading(false);
     }
@@ -60,14 +61,15 @@ const Home = () => {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (!error.response) {
-          alert('Network error: Unable to reach the server. Please check your connection.');
+          alert('Network Error: Please check your internet connection or backend server availability.');
         } else {
-          alert(`Error fetching response: ${error.response.data?.detail || error.message}`);
+          console.error('Query Error:', error.response.data);
+          alert(`Error fetching response: ${error.response.data.detail || error.message}`);
         }
       } else {
+        console.error('Unexpected Error:', error);
         alert('An unexpected error occurred. Please try again.');
       }
-      console.error('Query Error:', error);
     } finally {
       setQuerying(false);
     }
