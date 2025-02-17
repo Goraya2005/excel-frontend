@@ -63,7 +63,7 @@ const Home = () => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-cover bg-center" 
+      className="min-h-screen flex flex-col bg-cover bg-center bg-grey-300" 
       style={{ 
         backgroundImage: 'url("/usf3.jpg")', 
         backgroundSize: 'cover', 
@@ -73,6 +73,8 @@ const Home = () => {
     >
       <Navbar />
       <br />
+      <br />
+
       <div className="flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-6xl bg-white bg-opacity-90 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
           <div 
