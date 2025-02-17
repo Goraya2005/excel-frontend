@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-center items-left bg-blue-800 p-4 fixed top-0 w-full z-10">
+    <nav className="flex justify-start items-center bg-blue-800 p-4 fixed top-0 w-full z-10">
       {/* Left side logo and company name */}
-      <div className="flex items-center">
+      <div className="flex items-center ml-4"> {/* Added ml-4 for left margin */}
         <Link href="/" className="flex items-center">
           {/* Increased logo size by 1.5X (from 8 to 12) */}
           <div className="h-12 w-12 mr-2 relative">
