@@ -7,7 +7,8 @@ export default function Navbar() {
       {/* Left side logo and company name */}
       <div className="flex items-center">
         <Link href="/" className="flex items-center">
-          <div className="h-8 w-8 mr-2 relative">
+          {/* Increased logo size by 1.5X (from 8 to 12) */}
+          <div className="h-12 w-12 mr-2 relative">
             <Image
               src="/logo.png"
               alt="Logo"
@@ -15,7 +16,8 @@ export default function Navbar() {
               style={{ objectFit: 'contain' }}
             />
           </div>
-          <span className="text-white font-semibold">Naeem Goraya</span>
+          {/* Increased text size by 3X using text-3xl (or custom size) */}
+          <span className="text-white font-semibold text-3xl">Naeem Goraya</span>
         </Link>
       </div>
     </nav>
